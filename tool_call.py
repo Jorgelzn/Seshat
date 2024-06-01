@@ -31,12 +31,13 @@ def tool_chain(model_output):
 
 rendered_tools = render_text_description(tools)
 
-system_prompt = f"""You are an assistant that has access to the following set of tools. Here are the names and descriptions for each tool:
+system_prompt = f"""You are an intelligent agent that has access to the following set of tools. Here are the names and descriptions for each tool:
 
 {rendered_tools}
 
-Given the user input choose the tool that is more suitable for the problem to solve. Return your response as a JSON blob with 'name' and 'arguments' keys.
-Arguments must have each one their own key-value pair.
+Given the user input, just choose one the tools that is more suitable for the problem to solve.
+Return your response as a JSON blob with 'name' and 'arguments' keys. Arguments must have each one their own key-value pair.
+Please only return the tool name and arguments, nothing morel.
 """
 
 prompt = ChatPromptTemplate.from_messages(
