@@ -5,6 +5,12 @@ from langchain.tools.render import render_text_description
 from langchain_core.prompts import ChatPromptTemplate
 import json
 
+
+@tool
+def divide(a: int, b: int) -> float:
+    """divide a by b"""
+    return a / b
+
 @tool
 def multiply(a: int, b: int) -> int:
     """Multiply two numbers."""
@@ -19,7 +25,7 @@ def add(a: int, b: int) -> int:
 llm = Ollama(model="llama3")
 ll_with_stop = llm.bind(stop=["Observation"])
 
-tools = [add, multiply]
+tools = [add, multiply, divide]
 
 
 def tool_chain(action):
@@ -36,8 +42,8 @@ You are an intelligent assistant that solves the user task.
 You have access to the following set of tools. Here are the names and descriptions for each tool:
 {rendered_tools}
 You are going to solve the task using several steps.
-You must only use information from the steps.
-If you have found the solution, just explain it using this structure:
+You must only use information from the steps and the tools.
+If you have found the solution in the observations of the steps, just explain it using this structure:
 Solution found: the solution.
 If there is no step or you dont have enough information in the steps provided please just generate the next step using this structure:
 Step: step number
@@ -61,7 +67,7 @@ finish = False
 while not finish:
 
     chain = prompt | ll_with_stop
-    chain_result = chain.invoke({"rendered_tools": rendered_tools, "input": "what is the result of adding 3 and 5, and then multiplying the result by 10?",  "steps": steps})
+    chain_result = chain.invoke({"rendered_tools": rendered_tools, "input": "what is the result of adding 3 and 5, then multiplying the result by 10, and finally divide it by 7?",  "steps": steps})
 
     chain_result = chain_result[:-1]
     action = ""
