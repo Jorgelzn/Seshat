@@ -1,10 +1,8 @@
-from langchain_community.chat_models import ChatOllama
 from langchain_community.llms import Ollama
 from langchain.tools import tool
 from operator import itemgetter
 from langchain.tools.render import render_text_description
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import JsonOutputParser
 import json
 
 @tool
@@ -20,8 +18,6 @@ def add(a: int, b: int) -> int:
 
 llm = Ollama(model="llama3")
 ll_with_stop = llm.bind(stop=["Observation"])
-chat_model = ChatOllama(model="llama3")
-chat_model_with_stop = chat_model.bind(stop=["Observation"])
 
 tools = [add, multiply]
 
