@@ -1,4 +1,4 @@
 # Ragni 🔥
 Intelligent Companion powered by retrieval augmented generation
 
-![Ragni]( data/icon.jpg "Ragni")
+<img src="data/icon.jpg" alt="drawing" width="200"/>
