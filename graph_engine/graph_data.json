@@ -1,0 +1,29 @@
+{
+  "personajes": [
+    {
+      "nombre_nodo": "Tala",
+      "descripcion_nodo": "Una comerciante especializada en objetos raros"
+    },
+    {
+      "nombre_nodo": "Gil",
+      "descripcion_nodo": "Un cazador de monstruos experimentado"
+    }
+  ],
+  "lugares": [
+    {
+      "nombre_nodo": "Hydra Borracha",
+      "descripcion_nodo": "Taverna Pirata"
+    },
+    {
+      "nombre_nodo": "Atracaderos",
+      "descripcion_nodo": "Puerto en donde amarran los barcos de cazadores"
+    }
+  ],
+  "relaciones": [
+    {
+      "nombre_relacion": "TIENE_PERSONAJE",
+      "nombre_nodo_origen": "Hydra Borracha",
+      "nombre_nodo_destino": "Tala"
+    }
+  ]
+}
