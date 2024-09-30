@@ -3,7 +3,7 @@ from langchain.prompts import PromptTemplate
 import tools
 chat_model = ChatOllama(model="llama3")
 
-world_info = tools.tool_call(chat_model, "Tell me the information about the brazen hydra")
+world_info = tools.tool_call(chat_model, "Tell me the information about the Hydra Borracha ")
 template = """You are a game director that determine what happens to a player based on its action.
 You have the following info:
 player info: info about the player.

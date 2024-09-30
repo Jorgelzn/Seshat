@@ -25,17 +25,18 @@ def read_persons():
 def place_context(place_name:str):
     """Get the information for a place node and all the nodes related to it"""
     with driver.session() as session:
-        query_result = session.run("match (n:Place{name:'" + place_name.lower() + "'})-[]->(p) return n,p")
+        query_result = session.run("match (n:Lugar{nombre:'" + place_name + "'})-[r]-(p) return n,type(r),p")
         result = []
         for record in query_result:
             result.append(dict(record['n']))
+            result.append(record[1])
             result.append(dict(record['p']))
         return str(result)
 
 tools = [read_persons,place_context]
 
 def tool_chain(model_output):
-    #print(model_output)
+    print(model_output)
     tool_map = {tool.name: tool for tool in tools}
     chosen_tool = tool_map[model_output["name"]]
     return itemgetter("arguments") | chosen_tool

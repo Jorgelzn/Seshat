@@ -24,6 +24,11 @@
       "nombre_relacion": "TIENE_PERSONAJE",
       "nombre_nodo_origen": "Hydra Borracha",
       "nombre_nodo_destino": "Tala"
+    },
+    {
+      "nombre_relacion": "CONECTADO_A",
+      "nombre_nodo_origen": "Hydra Borracha",
+      "nombre_nodo_destino": "Atracaderos"
     }
   ]
 }
