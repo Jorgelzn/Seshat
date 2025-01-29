@@ -1,7 +1,7 @@
 from langchain_community.chat_models import ChatOllama
 from langchain.prompts import PromptTemplate
 import tools
-chat_model = ChatOllama(model="llama3")
+chat_model = ChatOllama(model="deepseek-r1:8b")
 
 world_info = tools.tool_call(chat_model, "Tell me the information about the Hydra Borracha ")
 template = """You are a game director that determine what happens to a player based on its action.
@@ -22,21 +22,21 @@ story = ""
 print(world_info)
 story_counter = []
 context_limit = 99999999999999999999999999999999999999999999999
-while True:
-    llm_chain = prompt | chat_model
-    user_input = input("text:")
 
-    response = llm_chain.invoke({"player_info": "its a mage",
-                                 "world_info": world_info,
-                                 "player_action": user_input,
-                                 "story_info": story})
+llm_chain = prompt | chat_model
+user_input = input("text:")
 
-    print(response.content)
-    story_point = "user:" + user_input + "\nmaster:" + response.content + "\n"
-    story_counter.append(len(story_point))
-    story += story_point
-    context_len = len(template)+len(world_info)+len(user_input)+len(story)
-    if context_len >= context_limit:
-        story = story[story_counter.pop(0):]
+response = llm_chain.invoke({"player_info": "its a mage",
+                             "world_info": world_info,
+                             "player_action": user_input,
+                             "story_info": story})
+
+print(response.content)
+story_point = "user:" + user_input + "\nmaster:" + response.content + "\n"
+story_counter.append(len(story_point))
+story += story_point
+context_len = len(template)+len(world_info)+len(user_input)+len(story)
+if context_len >= context_limit:
+    story = story[story_counter.pop(0):]
 
 tools.driver.close()
