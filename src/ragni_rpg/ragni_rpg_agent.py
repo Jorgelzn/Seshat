@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from langchain_community.chat_models import ChatOllama
 from langgraph.graph import StateGraph, START, END
 
+from src.models.graph_states import GraphState
+
 load_dotenv()
 
 telegram_token = os.getenv("TELEGRAM_TOKEN")
@@ -22,5 +24,20 @@ World info: {world_info}
 User action: {player_action}
 Story info:\n{story_info}"""
 
-user_input = input("text:")
+# CHAT GRAPH
+graph_chat = StateGraph(GraphState)
 
+graph_chat.add_node("chatbot", llm_nodes.standard_deepseek_prompt)
+
+graph_chat.add_edge(START, "chatbot")
+graph_chat.add_edge("chatbot", END)
+
+telegram_chat = graph_chat.compile()
+
+while True:
+    user_input = input("text:")
+
+    if user_input in ["bye","end","quit","exit"]:
+        break
+
+print("Agent terminated")

@@ -1,6 +1,6 @@
 from typing import TypedDict
 
 
-class GraphState(TypedDict):
+class StandarChatState(TypedDict):
     llm_input: str
     llm_output: str

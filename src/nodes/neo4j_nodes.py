@@ -1,11 +1,14 @@
 import json
+import os
 
 from neo4j import GraphDatabase
+
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def create_neo_rpg_db(uri,username,password):
     driver = GraphDatabase.driver(uri, auth=(username, password))
 
-    with open("graph_data.json") as f:
+    with open(os.path.join(ROOT_DIR, 'src', 'rpg', 'data', 'rpg_data.json')) as f:
         data = json.load(f)
 
     query = ""

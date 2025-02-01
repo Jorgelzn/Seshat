@@ -1,0 +1,38 @@
+{
+  "nodes":{
+    "characters":[
+      {
+        "name": "Tala",
+        "desciption": "Una comerciante especializada en objetos raros"
+      },
+      {
+        "name": "Gil",
+        "desciption": "Un cazador de monstruos experimentado"
+      }
+    ],
+    "places": [
+      {
+        "name": "Hydra Borracha",
+        "desciption": "Taverna Pirata"
+      },
+      {
+        "name": "Atracaderos",
+        "desciption": "Puerto en donde amarran los barcos de cazadores"
+      }
+    ]
+  },
+  "relationships":{
+    "HAS_CHARACTER": [
+      {
+        "origin": "Hydra Borracha",
+        "target": "Tala"
+      }
+    ],
+    "CONNECTED_TO": [
+      {
+        "origin": "Hydra Borracha",
+        "target": "Atracaderos"
+      }
+    ]
+  }
+}
