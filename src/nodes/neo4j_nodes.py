@@ -1,6 +1,6 @@
 import json
 import os
-
+from src.models.graph_states import RPGState
 from neo4j import GraphDatabase
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -64,28 +64,30 @@ def delete_all_nodes(state):
     return state
 
 
-def get_all_persons(state):
+def get_all_characters_in_location(state,location:str):
     """Read Persons from database"""
     driver = GraphDatabase.driver(state["uri"], auth=(state["username"], state["password"]))
     with driver.session() as session:
-        query_result = session.run("MATCH (p:Person) RETURN p.name AS name")
+        query_result = session.run(f"MATCH (l:Zone {{'name':'{location}'}})-[:HAS_CHARACTER]->(p:Character) RETURN p.name AS name")
         result = []
         for record in query_result:
             result.append(record["name"])
-        return result
+        state["query_result"] = result
     driver.close()
 
-def get_place_context(state, place_name:str):
+    return state
+
+def get_place_context(state:RPGState):
     """Get the information for a place node and all the nodes related to it"""
     driver = GraphDatabase.driver(state["uri"], auth=(state["username"], state["password"]))
     with driver.session() as session:
-        query_result = session.run("match (n:Lugar{nombre:'" + place_name + "'})-[r]-(p) return n,type(r),p")
+        query_result = session.run(f"match (n:Zone {{name:'{state['player_location']}'}})-[r]-(p) return n,type(r),p")
         result = []
         for record in query_result:
             result.append(dict(record['n']))
             result.append(record[1])
             result.append(dict(record['p']))
-        return str(result)
+        state["world_info"] = result
     driver.close()
 
     return state
