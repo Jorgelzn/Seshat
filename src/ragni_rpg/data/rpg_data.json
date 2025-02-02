@@ -3,38 +3,45 @@
     "Character":[
       {
         "name": "Tala",
-        "desciption": "Una comerciante especializada en objetos raros"
+        "description": "A retired pirate"
       },
       {
         "name": "Gil",
-        "desciption": "Un cazador de monstruos experimentado"
+        "description": "An experienced monster hunter"
       }
     ],
     "Zone": [
       {
-        "name": "Hydra Borracha",
-        "desciption": "Taverna Pirata"
+        "name": "Brazen Hydra",
+        "description": "It is a tavern frequently visited by sailors and pirates"
       },
       {
-        "name": "Atracaderos",
-        "desciption": "Puerto en donde amarran los barcos de cazadores"
+        "name": "Butcher Docks",
+        "description": "Place where the hunting ships arrive"
       }
     ]
   },
   "relationships":{
     "HAS_CHARACTER": [
       {
-        "origin": "Hydra Borracha",
+        "origin": "Brazen Hydra",
         "target": "Tala",
         "properties":{
           "role": "Owner"
+        }
+      },
+      {
+        "origin": "Butcher Docks",
+        "target": "Gil",
+        "properties":{
+          "role": "Looking for a mage to break a curse"
         }
       }
     ],
     "CONNECTED_TO": [
       {
-        "origin": "Hydra Borracha",
-        "target": "Atracaderos",
+        "origin": "Brazen Hydra",
+        "target": "Butcher Docks",
         "properties": {
 
         }
