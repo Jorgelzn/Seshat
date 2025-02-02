@@ -1,6 +1,6 @@
 {
   "nodes":{
-    "characters":[
+    "Character":[
       {
         "name": "Tala",
         "desciption": "Una comerciante especializada en objetos raros"
@@ -10,7 +10,7 @@
         "desciption": "Un cazador de monstruos experimentado"
       }
     ],
-    "places": [
+    "Zone": [
       {
         "name": "Hydra Borracha",
         "desciption": "Taverna Pirata"
@@ -25,13 +25,19 @@
     "HAS_CHARACTER": [
       {
         "origin": "Hydra Borracha",
-        "target": "Tala"
+        "target": "Tala",
+        "properties":{
+          "role": "Owner"
+        }
       }
     ],
     "CONNECTED_TO": [
       {
         "origin": "Hydra Borracha",
-        "target": "Atracaderos"
+        "target": "Atracaderos",
+        "properties": {
+
+        }
       }
     ]
   }
