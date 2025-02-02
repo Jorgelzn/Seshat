@@ -47,7 +47,7 @@ def create_neo_rpg_db(state):
 
     # create relations
     with driver.session() as session:
-       result = session.run(query)
+       session.run(query)
 
     driver.close()
 
