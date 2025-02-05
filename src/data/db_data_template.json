@@ -1,0 +1,54 @@
+{
+  "nodes":{
+    "Nodetype1":[
+      {
+        "property1": "value of property1",
+        "property2": "value of property2"
+      }
+    ],
+    "Nodetype2":[
+      {
+        "property1": "value of property1",
+        "property2": "value of property2"
+      }
+    ]
+  },
+  "relationships":{
+    "RELATIONSHIP_TYPE_1": [
+      {
+        "id_property": "name of the property to look for in nodes",
+        "origin": "value of property for origin node",
+        "target": "value of property for target node",
+        "properties":{
+          "property1": "value of property1"
+        }
+      },
+      {
+        "id_property": "name of the property to look for in nodes",
+        "origin": "value of property for origin node",
+        "target": "value of property for target node",
+        "properties":{
+          "property1": "value of property1"
+        }
+      }
+    ],
+    "RELATIONSHIP_TYPE_2": [
+      {
+        "id_property": "name of the property to look for in nodes",
+        "origin": "value of property for origin node",
+        "target": "value of property for target node",
+        "properties":{
+          "property1": "value of property1"
+        }
+      },
+      {
+        "id_property": "name of the property to look for in nodes",
+        "origin": "value of property for origin node",
+        "target": "value of property for target node",
+        "properties":{
+          "property1": "value of property1"
+        }
+      }
+    ]
+  }
+}

@@ -18,7 +18,7 @@ Give the answer in the same language as the question.
 User: {question}
 """
 
-# CHAT GRAPH
+# RAGNI TELEGRAM GRAPH
 graph_chat = StateGraph(GraphState)
 
 graph_chat.add_node("chatbot", llm_nodes.standard_deepseek_prompt)

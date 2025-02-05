@@ -11,10 +11,10 @@ from neo4j import GraphDatabase
 load_dotenv()
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-def create_neo_rpg_db():
+def create_neo_rpg_db(data_file_name:str):
     driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
 
-    with open(os.path.join(ROOT_DIR, 'src', 'ragni_neo', 'data', 'db_data.json')) as f:
+    with open(os.path.join(ROOT_DIR, 'src', 'data', data_file_name)) as f:
         data = json.load(f)
 
     query = ""
@@ -45,8 +45,8 @@ def create_neo_rpg_db():
                 for relation_property, relation_property_value in relation["properties"].items():
                     relation_properties += f"{relation_property}: '{relation_property_value}', "
                 relation_properties = f"{{{relation_properties[:-2]}}}"
-            query_match += (f" MATCH (a{counter} {{name: '{relation['origin']}'}}), "
-                            f" (b{counter} {{name: '{relation['target']}'}})")
+            query_match += (f" MATCH (a{counter} {{{relation['id_property']}: '{relation['origin']}'}}), "
+                            f" (b{counter} {{{relation['id_property']}: '{relation['target']}'}})")
             query_merge += f" MERGE (a{counter})-[:{relation_type} {relation_properties}]->(b{counter})"
             counter += 1
     query = query_match + query_merge
