@@ -3,7 +3,7 @@ import os
 from typing import Type
 
 from dotenv import load_dotenv
-from src.models.graph_states import Neo4jBaseState
+from src.models.graph_state import GraphState
 
 from neo4j import GraphDatabase
 
@@ -67,7 +67,7 @@ def delete_all_nodes():
     driver.close()
 
 
-def get_node_neighbours(state: Type[Neo4jBaseState], node_type: str, node_id: str,node_id_value: str):
+def get_node_neighbours(state: GraphState, node_type: str, node_id: str,node_id_value: str):
     """Get the information for a place node and all the nodes related to it"""
     driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
     with driver.session() as session:
@@ -77,7 +77,7 @@ def get_node_neighbours(state: Type[Neo4jBaseState], node_type: str, node_id: st
             result.append(dict(record['n']))
             result.append(record[1])
             result.append(dict(record['p']))
-        state.cypher_result = result
+        state.neo4j_data.cypher_result = result
     driver.close()
 
     return state

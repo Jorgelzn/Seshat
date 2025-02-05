@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from langgraph.graph import StateGraph, START, END
 from src.nodes import neo4j_nodes
-from src.models.graph_states import StandarNeo4jState
+from src.models.graph_state import StandarNeo4jState
 
 
 load_dotenv()

@@ -1,12 +1,12 @@
 from langchain_community.chat_models import ChatOllama
 import re
-from pydantic import BaseModel
+from src.models.graph_state import GraphState
 
 
 chat_model = ChatOllama(model="deepseek-r1:8b")
 
 
-def standard_deepseek_prompt(state: type[BaseModel]) -> type[BaseModel]:
+def standard_deepseek_prompt(state: GraphState) -> GraphState:
 
     chat_model_response = chat_model.invoke(state["llm_input"])
     response = chat_model_response.content
@@ -16,7 +16,7 @@ def standard_deepseek_prompt(state: type[BaseModel]) -> type[BaseModel]:
     return state
 
 
-def llm_actuator_edge(state: type[BaseModel]):
+def llm_actuator_edge(state: GraphState):
 
     if state["tobedone"] in ["quit","exit","bye"]:
         return "tobedone"
