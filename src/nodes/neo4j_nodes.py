@@ -1,14 +1,20 @@
 import json
 import os
-from src.models.graph_states import RPGState
+from typing import Type
+
+from dotenv import load_dotenv
+from src.models.graph_states import Neo4jBaseState
+
 from neo4j import GraphDatabase
 
+
+load_dotenv()
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-def create_neo_rpg_db(state):
-    driver = GraphDatabase.driver(state["uri"], auth=(state["username"], state["password"]))
+def create_neo_rpg_db():
+    driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
 
-    with open(os.path.join(ROOT_DIR, 'src', 'ragni_rpg', 'data', 'rpg_data.json')) as f:
+    with open(os.path.join(ROOT_DIR, 'src', 'ragni_neo', 'data', 'db_data.json')) as f:
         data = json.load(f)
 
     query = ""
@@ -51,43 +57,28 @@ def create_neo_rpg_db(state):
 
     driver.close()
 
-    return state
 
 
-def delete_all_nodes(state):
+def delete_all_nodes():
 
-    driver = GraphDatabase.driver(state["uri"], auth=(state["username"], state["password"]))
+    driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
     with driver.session() as session:
         session.run("MATCH (n) DETACH DELETE n")
     driver.close()
 
-    return state
 
-
-def get_all_characters_in_location(state,location:str):
-    """Read Persons from database"""
-    driver = GraphDatabase.driver(state["uri"], auth=(state["username"], state["password"]))
-    with driver.session() as session:
-        query_result = session.run(f"MATCH (l:Zone {{'name':'{location}'}})-[:HAS_CHARACTER]->(p:Character) RETURN p.name AS name")
-        result = []
-        for record in query_result:
-            result.append(record["name"])
-        state["query_result"] = result
-    driver.close()
-
-    return state
-
-def get_place_context(state:RPGState):
+def get_node_neighbours(state: Type[Neo4jBaseState], node_type: str, node_id: str,node_id_value: str):
     """Get the information for a place node and all the nodes related to it"""
-    driver = GraphDatabase.driver(state["uri"], auth=(state["username"], state["password"]))
+    driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
     with driver.session() as session:
-        query_result = session.run(f"match (n:Zone {{name:'{state['player_location']}'}})-[r]-(p) return n,type(r),p")
+        query_result = session.run(f"match (n:{node_type} {{{node_id}:'{node_id_value}'}})-[r]-(p) return n,type(r),p")
         result = []
         for record in query_result:
             result.append(dict(record['n']))
             result.append(record[1])
             result.append(dict(record['p']))
-        state["world_info"] = result
+        state.cypher_result = result
     driver.close()
 
     return state
+

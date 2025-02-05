@@ -3,7 +3,7 @@ import os
 import telebot
 from dotenv import load_dotenv
 from langgraph.graph import StateGraph, START, END
-from src.models.graph_states import StandarChatState
+from src.models.graph_states import StandardChatState
 from src.nodes import llm_nodes
 
 load_dotenv()
@@ -18,7 +18,7 @@ User: {question}
 """
 
 # CHAT GRAPH
-graph_chat = StateGraph(StandarChatState)
+graph_chat = StateGraph(StandardChatState)
 
 graph_chat.add_node("chatbot", llm_nodes.standard_deepseek_prompt)
 
@@ -35,7 +35,7 @@ def send_welcome(message):
     msg = message.text[6:]
     name = message.from_user.first_name
     print(name+": "+msg)
-    telegram_chat_input = StandarChatState(llm_input=bot_context.format(name=name,question=msg))
+    telegram_chat_input = StandardChatState(llm_input=bot_context.format(name=name,question=msg))
     response = telegram_chat.invoke(telegram_chat_input)
     bot.reply_to(message, response["llm_output"])
 
