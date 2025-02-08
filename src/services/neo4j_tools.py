@@ -11,14 +11,21 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 
 def obsidian_vault_to_neo4j(vault_dir: str):
-    obsidian_data = {}
+    obsidian_data = {"nodes": {"note": []}, "relationships": {}}
 
-    #TODO parse vault directory into json file
+    for root, dirs, files in os.walk(vault_dir):
+        for filename in files:
+            file_path = os.path.join(root, filename)
+            if ".git" not in file_path and ".obsidian" not in file_path and file_path.endswith(".md"):
+                with open(file_path, "r") as f:
+                    print(os.path.join(root, filename))
+                    obsidian_data["nodes"]["note"].append({"name":filename.split(.),"content": f.read()})
+
 
     with open(os.path.join(ROOT_DIR, 'src', 'data', 'obsidian.json'), "w") as f:
         f.write(json.dumps(obsidian_data))
 
-    create_neo_rpg_db('obsidian.json')
+    #create_neo_rpg_db('obsidian.json')
 
 
 def create_neo_rpg_db(data_file_name: str):
@@ -75,3 +82,6 @@ def delete_all_nodes():
     with driver.session() as session:
         session.run("MATCH (n) DETACH DELETE n")
     driver.close()
+
+
+obsidian_vault_to_neo4j("C:\workspace\cuaderno")
