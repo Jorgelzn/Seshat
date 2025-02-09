@@ -103,5 +103,3 @@ def delete_all_nodes():
         session.run("MATCH (n) DETACH DELETE n")
     driver.close()
 
-
-obsidian_vault_to_neo4j("C:\workspace\cuaderno")
