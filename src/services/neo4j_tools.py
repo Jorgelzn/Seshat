@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import time
-
+import re
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
@@ -11,21 +11,41 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 
 def obsidian_vault_to_neo4j(vault_dir: str):
-    obsidian_data = {"nodes": {"note": []}, "relationships": {}}
-
+    obsidian_data = {"nodes": {"note": []}, "relationships": {"LINKED_TO": []}}
+    link_pattern = re.compile(r"\[\[.*\]\]")
     for root, dirs, files in os.walk(vault_dir):
+
         for filename in files:
             file_path = os.path.join(root, filename)
             if ".git" not in file_path and ".obsidian" not in file_path and file_path.endswith(".md"):
-                with open(file_path, "r") as f:
-                    print(os.path.join(root, filename))
-                    obsidian_data["nodes"]["note"].append({"name":filename.split(.),"content": f.read()})
+                print(os.path.join(root, filename))
 
+                with open(file_path, "r") as f:
+                    content = f.read()
+
+                obsidian_data["nodes"]["note"].append({"name": filename.split(".")[0],"content": content.replace("'","-")})
+
+    for root, dirs, files in os.walk(vault_dir):
+        for filename in files:
+            file_name = filename.split(".")[0]
+            curren_node_content = [node["content"]for node in obsidian_data["nodes"]["note"] if node["name"] == file_name]
+            if len(curren_node_content) == 1:
+                linked_nodes = link_pattern.findall(curren_node_content[0])
+                for linked_node in linked_nodes:
+                    linked_node = linked_node[2:-2]
+                    nodes_names = [name["name"] for name in obsidian_data["nodes"]["note"]]
+                    if linked_node in nodes_names:
+                        obsidian_data["relationships"]["LINKED_TO"].append({
+                                "id_property": "name",
+                                "origin": file_name,
+                                "target": linked_node,
+                                "properties": {}
+                              })
 
     with open(os.path.join(ROOT_DIR, 'src', 'data', 'obsidian.json'), "w") as f:
         f.write(json.dumps(obsidian_data))
 
-    #create_neo_rpg_db('obsidian.json')
+    create_neo_rpg_db('obsidian.json')
 
 
 def create_neo_rpg_db(data_file_name: str):
