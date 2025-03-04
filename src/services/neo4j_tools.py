@@ -47,6 +47,8 @@ def obsidian_vault_to_neo4j(vault_dir: str):
 
     create_neo_rpg_db('obsidian.json')
 
+    os.remove(os.path.join(ROOT_DIR, 'src', 'data', 'obsidian.json'))
+
 
 def create_neo_rpg_db(data_file_name: str):
     driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
