@@ -1,6 +1,6 @@
 # Ragni :sparkles:
 
-<img src="media/ragni.jpg" alt="drawing" width="200" style="border-radius: 10px;"/>
+<img src="media/ragni.gif" alt="drawing" width="200" style="border-radius: 10px;"/>
 
 Ragni is an intelligent companion that will provide information from the users knowledge base.
 
