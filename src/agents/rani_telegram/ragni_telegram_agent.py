@@ -37,7 +37,7 @@ def send_welcome(message):
     name = message.from_user.first_name
     print(name+": "+msg)
     telegram_chat_input = GraphState(llm_data=LLMData(llm_input=bot_context.format(name=name,question=msg)))
-    response = telegram_chat.invoke(telegram_chat_input)
-    bot.reply_to(message, response["llm_output"])
+    telegram_chat.invoke(telegram_chat_input)
+    bot.reply_to(message, telegram_chat_input.llm_data.llm_output)
 
 bot.infinity_polling()
