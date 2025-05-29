@@ -2,7 +2,7 @@
 
 Text Role Playing Game Motor powered by graphs and large language models.
 
-<img src="media/ragni.gif" alt="drawing" width="200"/>
+<img src="media/ragni.jpg" alt="drawing" width="200" style=" border-radius: 10%;"/>
 
 Ragni is an intelligent companion that will be interacting with the player in their adventures.
 

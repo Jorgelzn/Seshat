@@ -42,18 +42,18 @@ def obsidian_vault_to_neo4j(vault_dir: str):
                                 "properties": {}
                               })
 
-    with open(os.path.join(ROOT_DIR, 'src', 'data', 'obsidian.json'), "w") as f:
+    with open(os.path.join(ROOT_DIR, 'src', 'resources', 'obsidian.json'), "w") as f:
         f.write(json.dumps(obsidian_data))
 
     create_neo_rpg_db('obsidian.json')
 
-    os.remove(os.path.join(ROOT_DIR, 'src', 'data', 'obsidian.json'))
+    os.remove(os.path.join(ROOT_DIR, 'src', 'resources', 'obsidian.json'))
 
 
 def create_neo_rpg_db(data_file_name: str):
     driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
 
-    with open(os.path.join(ROOT_DIR, 'src', 'data', data_file_name)) as f:
+    with open(os.path.join(ROOT_DIR, 'src', 'resources', data_file_name)) as f:
         data = json.load(f)
 
     query = ""
@@ -105,3 +105,4 @@ def delete_all_nodes():
         session.run("MATCH (n) DETACH DELETE n")
     driver.close()
 
+create_neo_rpg_db("senras.json")
