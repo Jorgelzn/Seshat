@@ -1,6 +1,5 @@
 import json
 import os
-from datetime import time
 import re
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
@@ -10,7 +9,15 @@ load_dotenv()
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-def obsidian_vault_to_neo4j(vault_dir: str):
+def delete_all_nodes():
+
+    driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
+    with driver.session() as session:
+        session.run("MATCH (n) DETACH DELETE n")
+    driver.close()
+
+
+def obsidian_vault_to_json(vault_dir: str, json_name: str = "obsidian.json"):
     obsidian_data = {"nodes": {"note": []}, "relationships": {"LINKED_TO": []}}
     link_pattern = re.compile(r"\[\[.*\]\]")
     for root, dirs, files in os.walk(vault_dir):
@@ -42,15 +49,11 @@ def obsidian_vault_to_neo4j(vault_dir: str):
                                 "properties": {}
                               })
 
-    with open(os.path.join(ROOT_DIR, 'src', 'resources', 'obsidian.json'), "w") as f:
+    with open(os.path.join(ROOT_DIR, 'src', 'resources', json_name), "w") as f:
         f.write(json.dumps(obsidian_data))
 
-    create_neo_rpg_db('obsidian.json')
 
-    os.remove(os.path.join(ROOT_DIR, 'src', 'resources', 'obsidian.json'))
-
-
-def create_neo_rpg_db(data_file_name: str):
+def create_neo_from_json(data_file_name: str = "obsidian.json"):
     driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
 
     with open(os.path.join(ROOT_DIR, 'src', 'resources', data_file_name)) as f:
@@ -97,12 +100,10 @@ def create_neo_rpg_db(data_file_name: str):
     driver.close()
 
 
+if __name__ == '__main__':
 
-def delete_all_nodes():
+    obsidian_vault_to_json("C:\workspace\cuaderno")
 
-    driver = GraphDatabase.driver(os.getenv("NEO_URI"), auth=(os.getenv("NEO_USER"), os.getenv("NEO_PASS")))
-    with driver.session() as session:
-        session.run("MATCH (n) DETACH DELETE n")
-    driver.close()
+    create_neo_from_json()
 
-create_neo_rpg_db("senras.json")
+    os.remove(os.path.join(ROOT_DIR, 'src', 'resources', "obsidian.json"))
