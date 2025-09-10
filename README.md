@@ -8,7 +8,7 @@ Actual features:
 
 - Create a Neo4j database from an obsidian vault
 - Local LLM Integration backed by Ollama
-- Simple chatbot for telegram and terminal
+- Simple chat interface for telegram and terminal
 
 Future features:
 
