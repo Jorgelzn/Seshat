@@ -2,7 +2,7 @@
 
 <img src="book.jpg" alt="drawing" width="200" style="border-radius: 10px;"/>
 
-Ragni is an intelligent companion that will provide information from the users knowledge base.
+Seshat is a knowledge retriever powered by LLMs
 
 Actual features:
 
